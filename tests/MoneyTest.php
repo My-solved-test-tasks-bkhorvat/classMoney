@@ -119,6 +119,14 @@ class MoneyTest extends TestCase
       $this->assertEquals('USD', $money3->getCurrency());
   }
 
+  public function testSubtrahendIsEqualsMinuend(): void
+  {
+      $money1 = new Money('3', 'USD');
+      $money2 = new Money('3', 'USD');
+      $money3 = $money1->subtract($money2);
+      $this->assertEquals(0, $money3);
+  }
+
   public function testSubtractIsNegative(): void
   {
       $money1 = new Money('2.02', 'USD');

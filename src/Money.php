@@ -38,7 +38,7 @@ class Money {
    * The amount in Money object must be positive. After addition, subtraction,
    * multiplication, division, we get the object of money.
    *
-   *Therefore, all $values must be positive.
+   * Therefore, all $values must be positive.
    *
    * Adding, subtracting, multiplying by 0 does not make sense.
    * Division by zero is not possible.
@@ -78,11 +78,13 @@ class Money {
       return new Money($sum, $this->currency);
   }
 
-  public function subtract(Money $subtrahend): Money
+  public function subtract(Money $subtrahend): Money|int
   {
       /**
        * The subtrahend cannot be greater than the minuend, becouse
        * the amount in Money object must be positive.
+       *
+       * If the subtrahend is equal to minuend return 0.
        */
       if(bccomp($subtrahend->getAmount(), $this->amount, self::SCALE) === 1) {
           throw new InvalidArgumentException('Result can not be negative.');
@@ -91,7 +93,11 @@ class Money {
       $this->checkCurrencyForEquality($subtrahend->getCurrency());
       $result = bcsub($this->amount, $subtrahend->getAmount(), self::SCALE);
 
-      return new Money($result, $this->currency);
+      if(bccomp($subtrahend->getAmount(), $this->amount, self::SCALE) === 0) {
+          return 0;
+      }else{
+          return new Money($result, $this->currency);
+      }
   }
 
   /**
