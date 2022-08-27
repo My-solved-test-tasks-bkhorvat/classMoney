@@ -9,8 +9,7 @@ use KrepyshSpec\World\Currency;
 
 class Money {
 
-    // Scale parameter for bc math functions
-    private const SCALE = 14;
+    private const BC_MATH_SCALE = 14;
 
     /**
      * The variable $amount must be > 0.
@@ -75,7 +74,7 @@ class Money {
     public function add(Money $addend): Money
     {
         $this->checkCurrencyForEquality($addend->getCurrency());
-        $sum = bcadd($this->amount, $addend->getAmount(), self::SCALE);
+        $sum = bcadd($this->amount, $addend->getAmount(), self::BC_MATH_SCALE);
 
         return new Money($sum, $this->currency);
     }
@@ -88,14 +87,14 @@ class Money {
          *
          * If the subtrahend is equal to minuend return 0.
          */
-        if(bccomp($subtrahend->getAmount(), $this->amount, self::SCALE) === 1) {
+        if(bccomp($subtrahend->getAmount(), $this->amount, self::BC_MATH_SCALE) === 1) {
             throw new InvalidArgumentException('Result can not be negative.');
         }
 
         $this->checkCurrencyForEquality($subtrahend->getCurrency());
-        $result = bcsub($this->amount, $subtrahend->getAmount(), self::SCALE);
+        $result = bcsub($this->amount, $subtrahend->getAmount(), self::BC_MATH_SCALE);
 
-        if(bccomp($subtrahend->getAmount(), $this->amount, self::SCALE) === 0) {
+        if(bccomp($subtrahend->getAmount(), $this->amount, self::BC_MATH_SCALE) === 0) {
             return 0;
         }else{
             return new Money($result, $this->currency);
@@ -115,7 +114,7 @@ class Money {
     {
         $this->checkValueForPositiveNumber($multiplier);
 
-        $result = bcmul($this->amount, $multiplier, self::SCALE);
+        $result = bcmul($this->amount, $multiplier, self::BC_MATH_SCALE);
 
         return new Money($result, $this->currency);
     }
@@ -124,7 +123,7 @@ class Money {
     {
         $this->checkValueForPositiveNumber($divisor);
 
-        $result = bcdiv($this->amount, $divisor, self::SCALE);
+        $result = bcdiv($this->amount, $divisor, self::BC_MATH_SCALE);
 
         return new Money($result, $this->currency);
     }
