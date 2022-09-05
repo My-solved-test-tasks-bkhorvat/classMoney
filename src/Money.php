@@ -82,7 +82,7 @@ class Money {
     public function subtract(Money $subtrahend): Money|int
     {
         /**
-         * The subtrahend cannot be greater than the minuend, becouse
+         * The subtrahend cannot be greater than the minuend, because
          * the amount in Money object must be positive.
          *
          * If the subtrahend is equal to minuend return 0.
